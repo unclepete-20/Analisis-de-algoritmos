@@ -41,10 +41,16 @@ class TuringFibonacci(object):
             if symbol is None:
                 return None
             new_state, new_symbol, move = self.transitions[(self.state, symbol)]
+            print(f"Current state: {self.state}")
+            print(f"Symbol read: {symbol}")
+            print(f"New transition: ({self.state}, {symbol}) -> ({new_state}, {new_symbol}, {move})")
             self.state = new_state
             self.tape.write(new_symbol)
             if move == 'L':
                 self.tape.move_left()
             elif move == 'R':
                 self.tape.move_right()
+            elif self.state == 'q10':
+                self.tape.save_output(new_symbol)
+            print(f"New head position: {self.tape.head_position}")
         return self.tape.get_output_string()
