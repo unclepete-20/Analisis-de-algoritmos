@@ -56,6 +56,7 @@ class TuringFibonacci(object):
 
     def compute_fibonacci(self):
         tn = len(self.tape.get_output_string())
+        file = open("res.txt", "w")
         while self.state != 'q10':
             symbol = self.read_symbol()
             if symbol is None:
@@ -64,7 +65,10 @@ class TuringFibonacci(object):
             next_state = self.states(tn)
             print(f"Current state: {self.state}")
             print(f"Symbol read: {symbol}")
-            print(f"New transition: ({self.state}, {symbol}) -> ({new_state}, {new_symbol}, {move})")
+            s = f"New transition: ({self.state}, {symbol}) -> ({new_state}, {new_symbol}, {move})"
+            print(s)
+            file.write(s[16::])
+            file.write('\n')
             self.state = new_state
             self.tape.write(new_symbol)
             result = ["1" for _ in range(next_state)]
