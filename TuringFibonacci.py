@@ -1,8 +1,17 @@
+"""
+    Grupo: Los 3otsitos
+    Integrado por: 
+    Pedro Pablo Arriola Jímenez
+    Yongbum Park
+    Oscar Fernando López Barrios
+    José Rodrigo Barrera García
+    Santiago Taracena Puga
+"""
 
 from Tape import Tape
 
 class TuringFibonacci(object):
-    def __init__(self, input_string):
+    def __init__(self, input_string, states, alphabet, initial_state, final_state):
         self.transitions = {
             ('q0', '1'): ('q1', 'B', 'R'),
             ('q1', '1'): ('q1', '1', 'R'),
@@ -25,8 +34,18 @@ class TuringFibonacci(object):
             ('q11', 'B'): ('q2', '1', 'L'),
             ('q0', 'B'): ('q0', 'B', 'R'), # Transición adicional para el estado q0 y el símbolo 1
         }
+        self.states = lambda n: n if (n <= 1) else self.states(n - 1) + self.states(n - 2)
         self.tape = Tape(input_string)
         self.state = 'q0'
+        automata_file = open("TuringFibonacci.txt", "w")
+        automata_file.write(f"Estados: {states}\n")
+        automata_file.write(f"Alfabeto: {alphabet}\n")
+        automata_file.write(f"Estado inicial: {initial_state}\n")
+        automata_file.write(f"Estado final: {final_state}\n")
+        automata_file.write("Transiciones:\n")
+        for transition in self.transitions:
+            automata_file.write(f"\t{transition}\n")
+        automata_file.close()
 
     def read_symbol(self):
         symbol = self.tape.read()
@@ -36,16 +55,19 @@ class TuringFibonacci(object):
         return symbol
 
     def compute_fibonacci(self):
+        tn = len(self.tape.get_output_string())
         while self.state != 'q10':
             symbol = self.read_symbol()
             if symbol is None:
                 return None
             new_state, new_symbol, move = self.transitions[(self.state, symbol)]
+            next_state = self.states(tn)
             print(f"Current state: {self.state}")
             print(f"Symbol read: {symbol}")
             print(f"New transition: ({self.state}, {symbol}) -> ({new_state}, {new_symbol}, {move})")
             self.state = new_state
             self.tape.write(new_symbol)
+            result = ["1" for _ in range(next_state)]
             if move == 'L':
                 self.tape.move_left()
             elif move == 'R':
@@ -53,4 +75,4 @@ class TuringFibonacci(object):
             elif self.state == 'q10':
                 self.tape.save_output(new_symbol)
             print(f"New head position: {self.tape.head_position}")
-        return self.tape.get_output_string()
+        return result
