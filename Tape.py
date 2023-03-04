@@ -1,3 +1,13 @@
+"""
+    Grupo: Los 3otsitos
+    Integrado por: 
+    Pedro Pablo Arriola Jímenez
+    Yongbum Park
+    Oscar Fernando López Barrios
+    José Rodrigo Barrera García
+    Santiago Taracena Puga
+"""
+
 class Tape(object):
     def __init__(self, input_string):
         self.tape = ['B'] * 100  
