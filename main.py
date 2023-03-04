@@ -6,6 +6,7 @@
     Oscar Fernando López Barrios
     José Rodrigo Barrera García
     Santiago Taracena Puga
+    Roberto Rios 
 """
 
 from Conversion import Conversion
